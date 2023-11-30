@@ -10,3 +10,8 @@
 ## Related Crates
 
 - [j5ik2o/chronos-parser-rs](https://github.com/j5ik2o/chronos-parser-rs)
+
+## Implementations for Scala
+
+- [j5ik2o/chronos-scheduler-scala](https://github.com/j5ik2o/chronos-scheduler-scala)
+- [j5ik2o/chronos-parser-scala](https://github.com/j5ik2o/chronos-parser-scala)
