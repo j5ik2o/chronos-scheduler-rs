@@ -7,3 +7,6 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![](https://tokei.rs/b1/github/j5ik2o/chronos-scheduler-rs)](https://github.com/XAMPPRocky/tokei)
 
+## Related Crates
+
+- [j5ik2o/chronos-parser-rs](https://github.com/j5ik2o/chronos-parser-rs)
