@@ -9,6 +9,23 @@
 [![License](https://img.shields.io/badge/License-APACHE2.0-blue.svg)](https://opensource.org/licenses/apache-2-0)
 [![](https://tokei.rs/b1/github/j5ik2o/chronos-scheduler-rs)](https://github.com/XAMPPRocky/tokei)
 
+A Rust crate for Job Scheduler. This Job Scheduler is simple.
+
+## Installation
+
+Add the following configuration to `Cargo.toml`.
+
+```toml
+[dependencies]
+chronos-scheduler-rs = "0.1.XXX"
+```
+
+## Usage
+
+```rust
+
+```
+
 ## Related Crates
 
 - [j5ik2o/chronos-parser-rs](https://github.com/j5ik2o/chronos-parser-rs)
