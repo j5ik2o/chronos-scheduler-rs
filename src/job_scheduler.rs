@@ -1,12 +1,18 @@
-use ulid_generator_rs::{ULID, ULIDGenerator};
 use crate::job::{Job, JobContext};
+use ulid_generator_rs::{ULIDGenerator, ULID};
 
-pub struct JobScheduler<F> {
+pub struct JobScheduler<F, T>
+where
+    F: FnMut(JobContext<T>),
+{
     id: ULID,
-    jobs: Vec<Job<F>>,
+    jobs: Vec<Job<F, T>>,
 }
 
-impl<F> JobScheduler<F> where F: FnMut(JobContext) {
+impl<F, T> JobScheduler<F, T>
+where
+    F: FnMut(JobContext<T>),
+{
     pub fn new() -> Self {
         let mut generator = ULIDGenerator::new();
         let id = generator.generate().unwrap();
@@ -16,7 +22,7 @@ impl<F> JobScheduler<F> where F: FnMut(JobContext) {
         }
     }
 
-    pub fn add_job(&mut self, job: Job<F>) {
+    pub fn add_job(&mut self, job: Job<F, T>) {
         self.jobs.push(job);
     }
 
@@ -29,10 +35,10 @@ impl<F> JobScheduler<F> where F: FnMut(JobContext) {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+    use chrono::{Duration, Utc};
     use std::env;
     use std::thread::sleep;
-    use chrono::{Duration, Utc};
-    use super::*;
 
     #[test]
     fn test_tick() {
@@ -47,9 +53,19 @@ mod tests {
         let job = Job::new(
             "*/1 * * * *".to_string(),
             |job_context| {
-                log::debug!("schedule_datetime = {}, now = {}: {}) Hello, world!", job_context.trigger(), job_context.now(), counter);
+                let str = job_context.data().borrow().unwrap();
+                log::debug!(
+                    "schedule_datetime = {}, now = {}: {}) {}",
+                    job_context.trigger(),
+                    job_context.now(),
+                    counter,
+                    str
+                );
                 counter += 1;
-            }).with_tick_interval(tick_interval);
+            },
+            Some("Hello, world!"),
+        )
+        .with_tick_interval(tick_interval);
         job_scheduler.add_job(job);
 
         let now = Utc::now();
@@ -65,5 +81,3 @@ mod tests {
         assert_eq!(counter, 1);
     }
 }
-
-
