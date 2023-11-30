@@ -23,7 +23,45 @@ chronos-scheduler-rs = "0.1.XXX"
 ## Usage
 
 ```rust
+// Create a new job scheduler
+let mut job_scheduler = JobScheduler::new();
 
+// Set the interval for the scheduler's tick to 1 minute
+let tick_interval = Duration::minutes(1);
+// Initialize a counter to track the number of job executions
+let mut counter = 0;
+
+// Define a new job that runs every minute
+let job = Job::new(
+  "*/1 * * * *".to_string(), // Cron expression for every minute
+  |job_context| {
+    // Borrow the data passed to the job context and unwrap it
+    let data = job_context.data().borrow().unwrap();
+    // Log the details of the job execution including the schedule, current time, counter, and data
+    log::debug!(
+      "schedule_datetime = {}, now = {}: {}) {}",
+      job_context.trigger(), // The scheduled datetime
+      job_context.now(),     // The current datetime
+      counter,               // The execution counter
+      data                   // The data passed to the job context
+    );
+    // Increment the counter after each job execution
+    counter += 1;
+  },
+  Some("Hello, world!"), // Optional data passed to the job context
+);
+// Add the defined job to the job scheduler
+job_scheduler.add_job(job);
+
+// Enter an infinite loop to continuously check and run scheduled jobs
+loop {
+  // Check and execute jobs based on the current datetime
+  job_scheduler.tick();
+  // Log the waiting period until the next tick
+  log::debug!("waiting for {} seconds...", tick_interval.num_seconds());
+  // Sleep for the duration of the tick interval
+  sleep(tick_interval.to_std().unwrap());
+}
 ```
 
 ## Related Crates
