@@ -1,0 +1,95 @@
+use chrono::{DateTime, Duration, Utc};
+use chronos_parser_rs::CronSchedule;
+use ulid_generator_rs::{ULID, ULIDGenerator};
+
+#[derive(Debug, Clone)]
+pub struct Job<F> {
+    id: ULID,
+    crond_expr: String,
+    tick_interval: Duration,
+    limit_missed_runs: usize,
+    func: F,
+    cond_schedule: CronSchedule<Utc>,
+    last_tick: Option<DateTime<Utc>>,
+}
+
+pub struct JobContext<'a> {
+    cron_expr: String,
+    trigger: &'a DateTime<Utc>,
+    now: &'a DateTime<Utc>,
+}
+
+impl<'a> JobContext<'a> {
+    pub fn new(cron_expr: &str, trigger: &'a DateTime<Utc>, now: &'a DateTime<Utc>) -> Self {
+        JobContext {
+            cron_expr: cron_expr.to_string(),
+            trigger,
+            now,
+        }
+    }
+
+    pub fn cron_expr(&self) -> &str {
+        &self.cron_expr
+    }
+
+    pub fn trigger(&self) -> &DateTime<Utc> {
+        self.trigger
+    }
+
+    pub fn now(&self) -> &DateTime<Utc> {
+        self.now
+    }
+}
+
+impl<F> Job<F> where F: FnMut(JobContext) {
+
+    pub fn new(crond_expr: String, func: F) -> Self {
+        let mut generator = ULIDGenerator::new();
+        let id = generator.generate().unwrap();
+        let cond_schedule = CronSchedule::new(&crond_expr).unwrap();
+        Job {
+            id,
+            crond_expr,
+            tick_interval: Duration::minutes(1),
+            limit_missed_runs: 5,
+            func,
+            cond_schedule,
+            last_tick: None,
+        }
+    }
+
+    pub fn tick_interval(&self) -> &Duration {
+        &self.tick_interval
+    }
+
+    pub fn with_tick_interval(mut self, tick_interval: Duration) -> Self {
+        self.tick_interval = tick_interval;
+        self
+    }
+
+    pub fn tick(&mut self) {
+        let now = Utc::now();
+        match self.last_tick {
+            None => {
+                self.last_tick = Some(now);
+            }
+            Some(lt) if lt + self.tick_interval < now => {
+                let itr = self.cond_schedule.upcoming(lt).take(self.limit_missed_runs);
+                for next_trigger in itr {
+                    if next_trigger > now {
+                        self.run(JobContext::new(&self.crond_expr, &next_trigger, &now));
+                        break;
+                    }
+                }
+                self.last_tick = Some(now);
+            }
+            _ => {}
+        }
+    }
+
+    fn upcoming_trigger(&mut self, itr: impl Iterator<Item=DateTime<Utc>>, now: &DateTime<Utc>, lt: DateTime<Utc>) {}
+
+    pub fn run(&mut self, job_context: JobContext) {
+        (self.func)(job_context);
+    }
+}
