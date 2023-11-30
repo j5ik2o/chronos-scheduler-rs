@@ -4,6 +4,7 @@
 [![crates.io](https://img.shields.io/crates/v/chronos-scheduler-rs.svg)](https://crates.io/crates/chronos-scheduler-rs)
 [![docs.rs](https://docs.rs/chronos-scheduler-rs/badge.svg)](https://docs.rs/chronos-scheduler-rs)
 [![Renovate](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com)
+[![dependency status](https://deps.rs/repo/github/j5ik2o/chronos-scheduler-rs/status.svg)](https://deps.rs/repo/github/j5ik2o/chronos-scheduler-rs)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![License](https://img.shields.io/badge/License-APACHE2.0-blue.svg)](https://opensource.org/licenses/apache-2-0)
 [![](https://tokei.rs/b1/github/j5ik2o/chronos-scheduler-rs)](https://github.com/XAMPPRocky/tokei)
