@@ -17,7 +17,7 @@ Add the following configuration to `Cargo.toml`.
 
 ```toml
 [dependencies]
-chronos-scheduler-rs = "0.1.XXX"
+chronos-scheduler-rs = "1.0.XXX"
 ```
 
 ## Usage
