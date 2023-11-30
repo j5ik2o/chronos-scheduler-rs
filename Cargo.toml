@@ -1,6 +1,11 @@
 [package]
 name = "chronos-scheduler-rs"
 version = "1.0.1"
+authors = ["Junichi Kato <j5ik2o@gmail.com>"]
+description = "A Rust crate for Job Scheduler. This Job Scheduler is simple."
+repository="https://github.com/j5ik2o/chronos-scheduler-rs"
+readme = "./README.md"
+license = "MIT OR Apache-2.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
