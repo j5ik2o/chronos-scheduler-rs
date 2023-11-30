@@ -9,7 +9,7 @@ edition = "2021"
 chronos-parser-rs = "0.1.381"
 ulid-generator-rs = "0.0.93"
 once_cell = { version = "1.18.0" }
-chrono = { version = "0.4.19", features = ["serde"] }
+chrono = { version = "0.4.31", features = ["serde"] }
 log = "0.4.20"
 
 [dev-dependencies]
