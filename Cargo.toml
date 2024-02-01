@@ -12,7 +12,7 @@ edition = "2021"
 
 [dependencies]
 chronos-parser-rs = "0.1.382"
-ulid-generator-rs = "0.0.98"
+ulid-generator-rs = "0.0.99"
 once_cell = { version = "1.19.0" }
 chrono = { version = "0.4.33", features = ["serde"] }
 log = "0.4.20"
