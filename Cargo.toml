@@ -18,4 +18,4 @@ chrono = { version = "0.4.34", features = ["serde"] }
 log = "0.4.20"
 
 [dev-dependencies]
-env_logger = "0.11.1"
+env_logger = "0.11.2"
