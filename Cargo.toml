@@ -15,7 +15,7 @@ chronos-parser-rs = "0.1.382"
 ulid-generator-rs = "0.0.101"
 once_cell = { version = "1.19.0" }
 chrono = { version = "0.4.34", features = ["serde"] }
-log = "0.4.20"
+log = "0.4.21"
 
 [dev-dependencies]
 env_logger = "0.11.2"
